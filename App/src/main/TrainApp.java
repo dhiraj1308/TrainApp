@@ -1,61 +1,33 @@
 package main;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class TrainApp {
 
-    // 🔥 INNER STATIC CLASS (KEY FIX)
-    public static class Bogie {
-        private String id;
+    // 🔥 Custom Exception
+    public static class InvalidCapacityException extends Exception {
+        public InvalidCapacityException(String message) {
+            super(message);
+        }
+    }
+
+    // 🔥 Bogie class with validation
+    public static class PassengerBogie {
+        private String type;
         private int capacity;
 
-        public Bogie(String id, int capacity) {
-            this.id = id;
+        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+            if (capacity <= 0) {
+                throw new InvalidCapacityException("Capacity must be greater than zero");
+            }
+            this.type = type;
             this.capacity = capacity;
+        }
+
+        public String getType() {
+            return type;
         }
 
         public int getCapacity() {
             return capacity;
         }
-
-        public String getId() {
-            return id;
-        }
-    }
-
-    // 🔹 Loop-based filtering
-    public List<Bogie> filterUsingLoop(List<Bogie> bogies) {
-        List<Bogie> result = new ArrayList<>();
-
-        for (Bogie b : bogies) {
-            if (b.getCapacity() > 60) {
-                result.add(b);
-            }
-        }
-        return result;
-    }
-
-    // 🔹 Stream-based filtering
-    public List<Bogie> filterUsingStream(List<Bogie> bogies) {
-        return bogies.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-    }
-
-    // 🔹 Measure loop time
-    public long measureLoopTime(List<Bogie> bogies) {
-        long start = System.nanoTime();
-        filterUsingLoop(bogies);
-        long end = System.nanoTime();
-        return end - start;
-    }
-
-    // 🔹 Measure stream time
-    public long measureStreamTime(List<Bogie> bogies) {
-        long start = System.nanoTime();
-        filterUsingStream(bogies);
-        long end = System.nanoTime();
-        return end - start;
     }
 }
