@@ -1,46 +1,47 @@
-Overview
-This use case focuses on implementing an optimized search algorithm to find a specific Bogie ID within a collection of train carriages. By using the Binary Search technique, the system divides the search range in half during each step, making it much faster than a standard linear search for large datasets.
+Goal
+The primary objective is to prevent search operations from executing on an empty train by throwing a runtime exception early in the process.
+
+Actor
+User
+
+Functional Flow
+The User triggers a search operation within the system.
+
+The System performs a state validation check to see if the bogie collection is empty.
+
+If no bogies are available, the System throws an IllegalStateException.
+
+The operation terminates immediately to prevent invalid execution.
+
+The User receives a meaningful error message explaining why the operation failed.
 
 Key Concepts
-Binary Search: An efficient searching method that repeatedly splits the data range in half.
+Defensive Programming
+A coding practice where the system validates all conditions and inputs before performing core logic. This ensures that the program does not enter an invalid or unpredictable state.
 
-Divide and Conquer: A strategy that breaks the main problem into smaller, manageable parts.
+IllegalStateException
+A standard Java runtime exception. It is used to signal that a method has been invoked at an inappropriate time or when the system is not in a valid state for that specific request.
 
-Sorted Data Requirement: This search only works if the Bogie IDs are already in alphabetical or numerical order.
+Fail Fast Principle
+This design philosophy dictates that the system should report a failure as soon as a problem is detected. By stopping execution immediately, it prevents the "snowball effect" of errors occurring further down the logic chain.
 
-Time Complexity: Operates at Logarithmic scale, which is significantly faster than Linear scale as data size increases.
+State Validation
+The process of verifying that the necessary data (in this case, the bogies) exists before the search logic begins.
 
-Implementation Logic
-To find a Bogie ID, the system follows these steps:
+Technical Requirements
+Validate the bogie collection status before initiating search logic.
 
-Preparation: Ensure the list of Bogie IDs is sorted.
+Implement a conditional check (if-statement) for the validation step.
 
-Initialization: Set the starting point (low) to 0 and the ending point (high) to the last position in the list.
+Throw a new IllegalStateException with a clear message if the collection is empty.
 
-Find the Middle: Calculate the middle position between the low and high points.
-
-Comparison:
-
-If the search key matches the middle value, the Bogie is found.
-
-If the search key comes before the middle value, ignore the right half and update the high point.
-
-If the search key comes after the middle value, ignore the left half and update the low point.
-
-Repeat: Continue these steps until the Bogie is found or the search range is empty.
-
-Project Structure
-Actor: User (Inputting the search ID).
-
-Input: The Bogie ID you are looking for.
-
-Output: The position (index) of the Bogie or a message stating it was not found.
-
-Method used: The compareTo method is used for checking the order of IDs.
+Ensure the search logic is unreachable if the exception is triggered.
 
 Benefits
-Speed: Handles large volumes of train data almost instantly.
+Reliability: Prevents the system from processing null or empty data sets.
 
-Efficiency: Reduces the workload on the system by minimizing the number of comparisons.
+Explicit Errors: Provides clear, readable error messages for developers and users.
 
-Scalability: Essential for modern logistics and railway management systems.
+Maintainability: Makes the code easier to debug by pinpointing exactly where the state failed.
+
+Real World Practice: Introduces industry-standard defensive coding habits and runtime exception management.
