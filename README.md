@@ -1,1 +1,55 @@
-UC8: Filter Passenger Bogies Using StreamsProject OverviewThe Train Consist Management App is a console-based Java application designed to simulate railway system management. A "consist" refers to the collection of bogies (passenger or goods) attached to an engine.This specific use case (UC8) focuses on transitioning from imperative loops to the Java Stream API to filter passenger bogies based on their seating capacity.Problem StatementIn previous iterations (UC7), bogies were sorted using Comparator, but the system lacked an efficient way to select specific bogies based on dynamic conditions. Traditional loops for filtering often lead to:Verbosity: Code becomes longer and harder to read.Mixed Logic: Business logic is entangled with iteration boilerplate.Maintenance Hurdles: Imperative code is more difficult to update as business rules change.GoalTo implement a declarative filtering mechanism using Java Streams to identify passenger bogies that meet specific seating capacity requirements.Key Concepts AppliedStream API: Processes collections in a declarative style.stream() Method: Converts the bogie list into a stream pipeline.filter() Operation: Selects elements matching a specific condition (e.g., capacity > 60).Lambda Expressions: Provides concise, functional logic for filtering.collect() / toList(): Reconstructs the processed stream back into a collection for display.Requirements & WorkflowReuse: Utilize the existing Bogie list from the previous use case.Stream Conversion: Convert the list using the .stream() method.Apply Logic: Use a lambda expression within the filter: filter(b -> b.capacity > 60).Immutability: Ensure the original list remains unchanged; the results must be stored in a new list.Output: Display the filtered results to the user.Test ScenariosThe implementation should be verified against the following test cases:Capacity Threshold: Ensure only bogies above the threshold are included.Exact Matches: Verify that bogies exactly equal to the threshold are excluded (if using >).No Results: Ensure the program returns an empty list gracefully if no bogies match the criteria.Integrity: Confirm the original bogie list size and content are preserved after the operation
+# UC9: Group Bogies by Type (Collectors.groupingBy)
+
+## Project Description
+The **Train Consist Management App** is a Java application designed to simulate railway operations. This specific module (**UC9**) demonstrates how to transition from basic flat-list filtering to organized data reporting.
+
+In real-world railway administration, managers need to separate passenger bogies from goods bogies or organize cars by class (e.g., AC vs. Sleeper). This project implements that logic using the **Java Stream API**.
+
+---
+
+## Technical Concept: `Collectors.groupingBy`
+While standard filtering (`filter()`) reduces a list, `groupingBy` organizes it. It functions similarly to the `GROUP BY` clause in SQL, returning a `Map<K, List<T>>` where:
+- **Key (K):** The attribute you are grouping by (e.g., `category`).
+- **Value (List<T>):** A list of all objects that match that specific key.
+
+---
+
+## Project Structure
+| File | Description |
+| :--- | :--- |
+| **Bogie.java** | The data model representing a train car with attributes like ID, Type, and Category. |
+| **TrainConsistApp.java** | Contains the core logic using `Collectors.groupingBy` to categorize the train consist. |
+| **TrainConsistAppTest.java** | JUnit 5 test cases to ensure the grouping logic handles both populated and empty lists correctly. |
+
+---
+
+## How to Run
+
+### 1. Prerequisites
+- **Java Development Kit (JDK) 8** or higher.
+- A terminal or IDE (IntelliJ, Eclipse, or VS Code).
+
+### 2. Execution
+1.  **Compile the classes:**
+    ```bash
+    javac com/railway/model/Bogie.java com/railway/TrainConsistApp.java
+    ```
+2.  **Run the application:**
+    ```bash
+    java com.railway.TrainConsistApp
+    ```
+
+---
+
+## Expected Output
+When executed, the console will display the bogies organized by their respective categories:
+
+```text
+--- Grouped Train Consist ---
+Goods: 2 items
+  -> G1 [Rectangular]
+  -> G2 [Cylindrical]
+Passenger: 3 items
+  -> B1 [Sleeper]
+  -> B2 [AC Chair]
+  -> B3 [First Class]

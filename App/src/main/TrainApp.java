@@ -1,70 +1,48 @@
-package main;
-/**
- * ================================================================
- * MAIN CLASS - TrainApp
- * ================================================================
- *
- * Use Case 8: Filter Passenger Bogies Using Streams
- *
- * Description:
- * This class filters passenger bogies based on seating capacity
- * using Java Stream API.
- *
- * Author: Dhiraj1308
- * Version: 8.0
- */
+package com.railway;
 
-import java.util.*;
+import com.railway.model.Bogie;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TrainApp {
-
-    // ============================================================
-    // Bogie Class (same as UC7)
-    // ============================================================
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
-
-        @Override
-        public String toString() {
-            return name + " -> " + capacity;
-        }
-    }
+/**
+ * Main application for UC9.
+ * Demonstrates grouping a list of Bogies by their category (e.g., Passenger vs Goods).
+ */
+public class TrainConsistApp {
 
     public static void main(String[] args) {
+        List<Bogie> trainConsist = getSampleBogies();
 
-        System.out.println("========================================");
-        System.out.println("   UC8 - Filter Passenger Bogies        ");
-        System.out.println("========================================\n");
+        // Execution of the grouping logic
+        Map<String, List<Bogie>> groupedResults = groupBogiesByCategory(trainConsist);
 
-        // Create list of bogies
-        List<Bogie> bogies = new ArrayList<>();
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("General", 90));
+        // Outputting results for verification
+        System.out.println("--- Grouped Train Consist ---");
+        groupedResults.forEach((category, list) -> {
+            System.out.println(category + ": " + list.size() + " items");
+            list.forEach(b -> System.out.println("  -> " + b.getId() + " [" + b.getType() + "]"));
+        });
+    }
 
-        // Display all bogies
-        System.out.println("All Bogies:");
-        bogies.forEach(System.out::println);
+    /**
+     * Logic for UC9: Groups bogies into a Map using Java Streams.
+     * @param bogies The raw list of bogies.
+     * @return A Map where the key is the category and value is the list of bogies in that category.
+     */
+    public static Map<String, List<Bogie>> groupBogiesByCategory(List<Bogie> bogies) {
+        return bogies.stream()
+                .collect(Collectors.groupingBy(Bogie::getCategory));
+    }
 
-        // ============================================================
-        // Stream Filtering (capacity > 60)
-        // ============================================================
-        List<Bogie> filtered = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
-
-        // Display filtered bogies
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        filtered.forEach(System.out::println);
-
-        System.out.println("\nUC8 filtering completed...");
+    private static List<Bogie> getSampleBogies() {
+        return Arrays.asList(
+                new Bogie("B1", "Sleeper", "Passenger"),
+                new Bogie("B2", "AC Chair", "Passenger"),
+                new Bogie("G1", "Rectangular", "Goods"),
+                new Bogie("B3", "First Class", "Passenger"),
+                new Bogie("G2", "Cylindrical", "Goods")
+        );
     }
 }
