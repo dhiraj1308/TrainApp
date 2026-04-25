@@ -1,6 +1,46 @@
-Project OverviewThis project implements a Linear Search algorithm to identify a specific Bogie ID within an unsorted list. It serves as a foundational exercise in array-based searching, sequential traversal, and string comparison in Java.GoalTo search and identify a specific Bogie ID from an unsorted array efficiently by traversing each element sequentially.Key ConceptsLinear Search: A straightforward searching technique that checks every element in a list one by one.Sequential Traversal: Visiting elements in order from index $0$ to $n-1$.Early Termination: The process stops as soon as a match is found to save unnecessary computations.Time Complexity: Operates at $O(n)$, where $n$ is the number of bogies in the list.Data Handling: Specifically designed to work with unsorted data and safe string comparison using .equals().System FlowInput: User provides an array of Bogie IDs and a specific "Search Key" (the ID to find).Processing: * The system starts at the first element.It compares the current element with the search key using equality logic.If a match is found, the search terminates immediately.Output: The system displays whether the Bogie ID exists and, optionally, its position in the array.Technical RequirementsArray Implementation: Store Bogie IDs in a String[] array.Looping Logic: Use a for or while loop for traversal.Comparison: Use the .equals() method (not ==) for safe string matching.Termination: Implement a break statement or a boolean flag to stop the search upon success.BenefitsVersatility: Works regardless of whether the data is sorted or unordered.Simplicity: Easy to implement and debug for small to medium datasets.Foundation: Provides the logical groundwork for more optimized algorithms like Binary Search (UC19).Example UsageJava// Example Input
-String[] bogies = {"B12", "A05", "C09", "B22"};
-String searchKey = "C09";
+Overview
+This use case focuses on implementing an optimized search algorithm to find a specific Bogie ID within a collection of train carriages. By using the Binary Search technique, the system divides the search range in half during each step, making it much faster than a standard linear search for large datasets.
 
-// Result
-// "Bogie C09 found in the system."
+Key Concepts
+Binary Search: An efficient searching method that repeatedly splits the data range in half.
+
+Divide and Conquer: A strategy that breaks the main problem into smaller, manageable parts.
+
+Sorted Data Requirement: This search only works if the Bogie IDs are already in alphabetical or numerical order.
+
+Time Complexity: Operates at Logarithmic scale, which is significantly faster than Linear scale as data size increases.
+
+Implementation Logic
+To find a Bogie ID, the system follows these steps:
+
+Preparation: Ensure the list of Bogie IDs is sorted.
+
+Initialization: Set the starting point (low) to 0 and the ending point (high) to the last position in the list.
+
+Find the Middle: Calculate the middle position between the low and high points.
+
+Comparison:
+
+If the search key matches the middle value, the Bogie is found.
+
+If the search key comes before the middle value, ignore the right half and update the high point.
+
+If the search key comes after the middle value, ignore the left half and update the low point.
+
+Repeat: Continue these steps until the Bogie is found or the search range is empty.
+
+Project Structure
+Actor: User (Inputting the search ID).
+
+Input: The Bogie ID you are looking for.
+
+Output: The position (index) of the Bogie or a message stating it was not found.
+
+Method used: The compareTo method is used for checking the order of IDs.
+
+Benefits
+Speed: Handles large volumes of train data almost instantly.
+
+Efficiency: Reduces the workload on the system by minimizing the number of comparisons.
+
+Scalability: Essential for modern logistics and railway management systems.
