@@ -2,48 +2,27 @@ package main;
 
 public class TrainApp {
 
-    // 🔥 Custom Runtime Exception
-    public static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
+    // 🔹 Bubble Sort Method
+    public int[] sortCapacities(int[] capacities) {
 
-    // 🔥 Goods Bogie
-    public static class GoodsBogie {
-        private String shape;
-        private String cargo;
+        int n = capacities.length;
 
-        public GoodsBogie(String shape) {
-            this.shape = shape;
-        }
+        // Outer loop → passes
+        for (int i = 0; i < n - 1; i++) {
 
-        public String getShape() {
-            return shape;
-        }
+            // Inner loop → comparison
+            for (int j = 0; j < n - i - 1; j++) {
 
-        public String getCargo() {
-            return cargo;
-        }
+                // Swap if left > right
+                if (capacities[j] > capacities[j + 1]) {
 
-        // 🔥 Assignment with try-catch-finally
-        public void assignCargo(String cargo) {
-            try {
-                // Unsafe condition
-                if (shape.equalsIgnoreCase("Rectangular") &&
-                        cargo.equalsIgnoreCase("Petroleum")) {
-                    throw new CargoSafetyException("Unsafe cargo assignment!");
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
                 }
-
-                // Safe assignment
-                this.cargo = cargo;
-
-            } catch (CargoSafetyException e) {
-                System.out.println("Error: " + e.getMessage());
-
-            } finally {
-                System.out.println("Assignment attempt completed.");
             }
         }
+
+        return capacities;
     }
 }

@@ -1,73 +1,11 @@
-Overview
-The goal of this use case is to ensure that unsafe cargo assignments (e.g., placing flammable liquids in inappropriate containers) do not crash the application. By implementing custom exceptions and a structured try-catch-finally block, the system maintains stability while providing clear feedback to the user.
-
-Core Functionality
-Validation: Checks the compatibility between the cargo type and the bogie shape.
-
-Safety Rule: Petroleum products must not be assigned to rectangular bogies (Safety Hazard).
-
-Error Handling: Uses a custom CargoSafetyException to interrupt unsafe operations.
-
-Cleanup: Uses a finally block to ensure all operations are logged, regardless of success or failure.
-
-🛠️ Key Technical Concepts
-Custom Runtime Exception: A domain-specific exception (CargoSafetyException) that extends RuntimeException.
-
-throw Keyword: Explicitly triggers the exception when a safety violation is detected.
-
-try-catch-finally: * try: Wraps the cargo assignment logic.
-
-catch: Intercepts the CargoSafetyException to prevent a crash.
-
-finally: Executes mandatory logging/cleanup.
-
-💻 Implementation Guide
-1. Define the Custom Exception
-   Java
-   public class CargoSafetyException extends RuntimeException {
-   public CargoSafetyException(String message) {
-   super(message);
-   }
-   }
-2. Cargo Assignment Logic
-   When assigning cargo, the system must validate the "Petroleum vs. Rectangular" rule:
-
-Java
-public void assignCargo(String cargoType, String bogieShape) {
-try {
-System.out.println("Attempting to assign " + cargoType + " to " + bogieShape + " bogie...");
-
-        if (cargoType.equalsIgnoreCase("Petroleum") && bogieShape.equalsIgnoreCase("Rectangular")) {
-            throw new CargoSafetyException("CRITICAL SAFETY VIOLATION: Petroleum cannot be stored in Rectangular bogies!");
-        }
-        
-        System.out.println("Cargo successfully assigned.");
-    } 
-    catch (CargoSafetyException e) {
-        System.err.println("Assignment Failed: " + e.getMessage());
-    } 
-    finally {
-        System.out.println("Cargo assignment process completed. (Logging to System Audit)");
-    }
+Based on the assignment details for UC16 - Sort Passenger Bogies by Capacity, here is a structured README.md file you can use for your project. It covers the logic, requirements, and the specific Bubble Sort implementation requested by Prabhu Nagamani.UC16: Sort Passenger Bogies by CapacityProject OverviewThis project implements a manual sorting mechanism to organize passenger bogie capacities in ascending order. Instead of using built-in language utilities (like Arrays.sort()), this solution utilizes the Bubble Sort algorithm to demonstrate fundamental algorithmic thinking and array manipulation.GoalTo sort an array of bogie capacities using a basic comparison-based algorithm to understand the internal mechanics of sorting, time complexity ($O(n^2)$), and nested loop processing.FeaturesManual Implementation: Uses a custom Bubble Sort algorithm without library dependencies.Adjacent Comparison: Iterates through the array, comparing neighboring elements.Swapping Logic: Swaps elements using a temporary variable when they are out of order.Pass-through Iteration: Continues multiple passes until the entire array is sorted.Logic FlowInput: The system receives an array of integers representing bogie capacities.Comparison: The system enters a nested loop where array[j] is compared with array[j+1].Swap: If array[j] > array[j+1], the values are swapped.Repeat: This process repeats for all elements across multiple passes.Output: The sorted array is displayed to the user.Algorithm Details: Bubble SortThe core of this use case is the Bubble Sort algorithm. In each pass, the largest unsorted element "bubbles up" to its correct position at the end of the array.ComplexityTime Complexity: $O(n^2)$ (Quadratic)Space Complexity: $O(1)$ (In-place sorting)Sample Pseudo-codeJavafor (int i = 0; i < n - 1; i++) {
+for (int j = 0; j < n - i - 1; j++) {
+if (bogies[j] > bogies[j + 1]) {
+// Swap logic
+int temp = bogies[j];
+bogies[j] = bogies[j + 1];
+bogies[j + 1] = temp;
 }
-📋 Requirements Checklist
-[x] Create CargoSafetyException class.
-
-[x] Implement shape and cargo validation logic.
-
-[x] Throw exception if Petroleum is assigned to a Rectangular bogie.
-
-[x] Catch the exception and display a user-friendly error message.
-
-[x] Use a finally block for completion logging.
-
-[x] Verify the application continues running after a caught exception.
-
-🚀 Benefits
-System Stability: Prevents "Blue Screen" or crash scenarios during invalid user input.
-
-Operational Safety: Enforces real-world railway safety standards through code.
-
-Audit Trail: The finally block ensures every attempt is recorded for safety audits.
-
-Note: This implementation focuses on Runtime Exceptions (unchecked), meaning the compiler does not force you to catch them, but the application logic requires it for graceful failure handling.
+}
+}
+Key RequirementsCreate an array specifically for passenger bogie capacities.Strictly avoid using Arrays.sort() or Collections.sort().Ensure the output clearly displays the capacities before and after sorting.BenefitsBridges the gap between theoretical data structures and practical implementation.Builds a foundation for understanding more optimized sorting algorithms (like QuickSort or MergeSort) later.Enhances problem-solving skills through low-level array access.
