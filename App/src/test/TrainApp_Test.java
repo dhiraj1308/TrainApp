@@ -1,102 +1,46 @@
-package test;
+package com.railway;
 
-
+import com.railway.model.Bogie;
 import org.junit.jupiter.api.Test;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TrainApp_Test {
+/**
+ * Test cases for UC9: Group Bogies by Type.
+ */
+public class TrainConsistAppTest {
 
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
-    }
-
-    private List<Bogie> getSampleBogies() {
-        return Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 56),
-                new Bogie("First Class", 24),
-                new Bogie("General", 90)
+    @Test
+    void testGroupBogiesByCategory_Success() {
+        // Arrange: Create a mixed list of Passenger and Goods bogies
+        List<Bogie> bogies = Arrays.asList(
+                new Bogie("P1", "Sleeper", "Passenger"),
+                new Bogie("G1", "Flatcar", "Goods"),
+                new Bogie("P2", "Dining", "Passenger")
         );
+
+        // Act: Apply grouping logic
+        Map<String, List<Bogie>> result = TrainConsistApp.groupBogiesByCategory(bogies);
+
+        // Assert: Verify map structure and counts
+        assertEquals(2, result.size(), "Map should contain exactly 2 categories.");
+        assertEquals(2, result.get("Passenger").size(), "Passenger group should have 2 entries.");
+        assertEquals(1, result.get("Goods").size(), "Goods group should have 1 entry.");
+        assertEquals("P1", result.get("Passenger").get(0).getId());
     }
 
     @Test
-    void testFilter_CapacityGreaterThanThreshold() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 70)
-                .toList();
+    void testGroupBogiesByCategory_EmptyList() {
+        // Arrange: Empty input
+        List<Bogie> emptyList = Arrays.asList();
 
-        assertTrue(result.stream().allMatch(b -> b.capacity > 70));
-    }
+        // Act: Apply grouping logic
+        Map<String, List<Bogie>> result = TrainConsistApp.groupBogiesByCategory(emptyList);
 
-    @Test
-    void testFilter_CapacityEqualToThreshold() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 72)
-                .toList();
-
-        assertTrue(result.stream().noneMatch(b -> b.capacity == 72));
-    }
-
-    @Test
-    void testFilter_CapacityLessThanThreshold() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 60)
-                .toList();
-
-        assertFalse(result.stream().anyMatch(b -> b.capacity < 60));
-    }
-
-    @Test
-    void testFilter_MultipleBogiesMatching() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 50)
-                .toList();
-
-        assertTrue(result.size() > 1);
-    }
-
-    @Test
-    void testFilter_NoBogiesMatching() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 200)
-                .toList();
-
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    void testFilter_AllBogiesMatching() {
-        List<Bogie> result = getSampleBogies().stream()
-                .filter(b -> b.capacity > 10)
-                .toList();
-
-        assertEquals(4, result.size());
-    }
-
-    @Test
-    void testFilter_EmptyBogieList() {
-        List<Bogie> result = new ArrayList<Bogie>().stream()
-                .filter(b -> b.capacity > 50)
-                .toList();
-
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    void testFilter_OriginalListUnchanged() {
-        List<Bogie> original = new ArrayList<>(getSampleBogies());
-
-        original.stream()
-                .filter(b -> b.capacity > 60)
-                .toList();
-
-        assertEquals(4, original.size());
+        // Assert: Result should be an empty map, not null
+        assertNotNull(result);
+        assertTrue(result.isEmpty(), "Resulting map should be empty for an empty input list.");
     }
 }
