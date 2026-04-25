@@ -1,107 +1,73 @@
-system simulation. current read me cahgen and give i will copy apste thats it
+Overview
+The goal of this use case is to ensure that unsafe cargo assignments (e.g., placing flammable liquids in inappropriate containers) do not crash the application. By implementing custom exceptions and a structured try-catch-finally block, the system maintains stability while providing clear feedback to the user.
 
-Here’s your UPDATED README (UC1 → UC12) — clean, structured, and ready to copy-paste 👇
+Core Functionality
+Validation: Checks the compatibility between the cargo type and the bogie shape.
 
-🚆 Train Consist Management App
-📌 Overview
-The Train Consist Management App is a console-based Java application that simulates how railway systems manage a train’s consist — the sequence of bogies attached to an engine.
+Safety Rule: Petroleum products must not be assigned to rectangular bogies (Safety Hazard).
 
-This project demonstrates Core Java, Data Structures, Streams, Regex, and OOP concepts through real-world railway scenarios.
+Error Handling: Uses a custom CargoSafetyException to interrupt unsafe operations.
 
-🎯 Features
-Manage passenger and goods bogies
-Track seating and load capacities
-Ensure uniqueness of bogies
-Maintain train formation order
-Map bogies to operational attributes
-Sort bogies based on capacity
-Filter and group bogies using Streams
-Calculate total seating capacity
-Validate Train ID and Cargo Codes using Regex
-Enforce safety compliance rules for goods bogies
-🏗️ Concepts Covered
-Use Case	Concept
-UC1	Application setup, ArrayList initialization
-UC2	ArrayList operations (add, remove, contains)
-UC3	HashSet (uniqueness)
-UC4	OOP (Bogie class, objects)
-UC5	LinkedHashSet (order + uniqueness)
-UC6	HashMap (key-value mapping)
-UC7	Comparator (custom sorting)
-UC8	Stream API – filter()
-UC9	Stream API – groupingBy()
-UC10	Stream API – map() + reduce()
-UC11	Regex validation (Pattern & Matcher)
-UC12	Stream API – allMatch() (safety compliance)
-📂 Project Structure
-TrainConsistManagement/ │ ├── App/ │ └── src/ │ └── TrainConsistManagement.java │ ├── .gitignore └── README.md
+Cleanup: Uses a finally block to ensure all operations are logged, regardless of success or failure.
 
-🚀 How to Run
-Open project in IntelliJ / Eclipse
-Navigate to:
-App/src/TrainConsistManagement.java
+🛠️ Key Technical Concepts
+Custom Runtime Exception: A domain-specific exception (CargoSafetyException) that extends RuntimeException.
 
-Right-click → Run
-OR using terminal:
+throw Keyword: Explicitly triggers the exception when a safety violation is detected.
 
-javac TrainConsistManagement.java
-java TrainConsistManagement
-🧪 Sample Functionalities
-✅ Add Passenger Bogies
-Sleeper
-AC Chair
-First Class
-✅ Ensure Unique Bogies
-Duplicate bogies automatically ignored using HashSet
-✅ Maintain Order
-Train formation preserved using LinkedHashSet
-✅ Map Capacity
-Sleeper → 72
-AC Chair → 50
-First Class → 30
-✅ Sort Bogies
-Sorted using Comparator based on capacity
-✅ Filter Bogies (UC8)
-Display bogies with capacity > threshold using filter()
-✅ Group Bogies (UC9)
-Group by type using groupingBy()
-✅ Total Capacity (UC10)
-Calculate total seats using map() + reduce()
-✅ Regex Validation (UC11)
-Train ID → TRN-1234
-Cargo Code → PET-AB
-✅ Safety Compliance (UC12)
-Cylindrical bogies must carry Petroleum only
-Validated using allMatch()
-📊 Sample Output
-=== Train Consist Management App ===
+try-catch-finally: * try: Wraps the cargo assignment logic.
 
-All Bogies:
-Sleeper (Capacity: 72)
-AC Chair (Capacity: 50)
-First Class (Capacity: 30)
+catch: Intercepts the CargoSafetyException to prevent a crash.
 
-Total Seating Capacity: 152
+finally: Executes mandatory logging/cleanup.
 
-Grouped Bogies:
-Sleeper → [Sleeper (Capacity: 72)]
-AC Chair → [AC Chair (Capacity: 50)]
+💻 Implementation Guide
+1. Define the Custom Exception
+   Java
+   public class CargoSafetyException extends RuntimeException {
+   public CargoSafetyException(String message) {
+   super(message);
+   }
+   }
+2. Cargo Assignment Logic
+   When assigning cargo, the system must validate the "Petroleum vs. Rectangular" rule:
 
-Train ID is VALID
-Cargo Code is VALID
+Java
+public void assignCargo(String cargoType, String bogieShape) {
+try {
+System.out.println("Attempting to assign " + cargoType + " to " + bogieShape + " bogie...");
 
-Train is SAFETY COMPLIANT
-💡 Key Learnings
-Difference between List, Set, and Map
-Importance of uniqueness in real systems
-Object-Oriented design using classes
-Custom sorting using Comparator
-Functional programming using Streams
-Data validation using Regex
-Real-world business rule enforcement
-🔧 Technologies Used
-Java (JDK 17+ / 21+)
-Collections Framework
-Stream API
-Regex (Pattern & Matcher)
-👨‍💻 Author
+        if (cargoType.equalsIgnoreCase("Petroleum") && bogieShape.equalsIgnoreCase("Rectangular")) {
+            throw new CargoSafetyException("CRITICAL SAFETY VIOLATION: Petroleum cannot be stored in Rectangular bogies!");
+        }
+        
+        System.out.println("Cargo successfully assigned.");
+    } 
+    catch (CargoSafetyException e) {
+        System.err.println("Assignment Failed: " + e.getMessage());
+    } 
+    finally {
+        System.out.println("Cargo assignment process completed. (Logging to System Audit)");
+    }
+}
+📋 Requirements Checklist
+[x] Create CargoSafetyException class.
+
+[x] Implement shape and cargo validation logic.
+
+[x] Throw exception if Petroleum is assigned to a Rectangular bogie.
+
+[x] Catch the exception and display a user-friendly error message.
+
+[x] Use a finally block for completion logging.
+
+[x] Verify the application continues running after a caught exception.
+
+🚀 Benefits
+System Stability: Prevents "Blue Screen" or crash scenarios during invalid user input.
+
+Operational Safety: Enforces real-world railway safety standards through code.
+
+Audit Trail: The finally block ensures every attempt is recorded for safety audits.
+
+Note: This implementation focuses on Runtime Exceptions (unchecked), meaning the compiler does not force you to catch them, but the application logic requires it for graceful failure handling.

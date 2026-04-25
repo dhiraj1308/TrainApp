@@ -2,32 +2,48 @@ package main;
 
 public class TrainApp {
 
-    // 🔥 Custom Exception
-    public static class InvalidCapacityException extends Exception {
-        public InvalidCapacityException(String message) {
+    // 🔥 Custom Runtime Exception
+    public static class CargoSafetyException extends RuntimeException {
+        public CargoSafetyException(String message) {
             super(message);
         }
     }
 
-    // 🔥 Bogie class with validation
-    public static class PassengerBogie {
-        private String type;
-        private int capacity;
+    // 🔥 Goods Bogie
+    public static class GoodsBogie {
+        private String shape;
+        private String cargo;
 
-        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-            if (capacity <= 0) {
-                throw new InvalidCapacityException("Capacity must be greater than zero");
+        public GoodsBogie(String shape) {
+            this.shape = shape;
+        }
+
+        public String getShape() {
+            return shape;
+        }
+
+        public String getCargo() {
+            return cargo;
+        }
+
+        // 🔥 Assignment with try-catch-finally
+        public void assignCargo(String cargo) {
+            try {
+                // Unsafe condition
+                if (shape.equalsIgnoreCase("Rectangular") &&
+                        cargo.equalsIgnoreCase("Petroleum")) {
+                    throw new CargoSafetyException("Unsafe cargo assignment!");
+                }
+
+                // Safe assignment
+                this.cargo = cargo;
+
+            } catch (CargoSafetyException e) {
+                System.out.println("Error: " + e.getMessage());
+
+            } finally {
+                System.out.println("Assignment attempt completed.");
             }
-            this.type = type;
-            this.capacity = capacity;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getCapacity() {
-            return capacity;
         }
     }
 }
