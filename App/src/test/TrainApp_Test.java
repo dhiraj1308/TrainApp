@@ -1,75 +1,63 @@
 package test;
 
-import main.UseCase13TrainConsistMgmt;
-import main.UseCase13TrainConsistMgmt.Bogie; // 🔥 IMPORTANT
+import main.UseCase14TrainConsistMgmt;
+import main.UseCase14TrainConsistMgmt.PassengerBogie;
+import main.UseCase14TrainConsistMgmt.InvalidCapacityException;
+
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UseCase13TrainConsistMgmtTest {
+public class UseCase14TrainConsistMgmtTest {
 
-    private List<Bogie> createSampleBogies() {
-        return Arrays.asList(
-                new Bogie("B1", 50),
-                new Bogie("B2", 70),
-                new Bogie("B3", 80),
-                new Bogie("B4", 40)
-        );
+    @Test
+    void testException_ValidCapacityCreation() {
+        assertDoesNotThrow(() -> {
+            PassengerBogie bogie = new PassengerBogie("Sleeper", 72);
+            assertNotNull(bogie);
+        });
     }
 
     @Test
-    void testLoopFilteringLogic() {
-        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
-
-        List<Bogie> result = obj.filterUsingLoop(createSampleBogies());
-
-        assertEquals(2, result.size());
+    void testException_NegativeCapacityThrowsException() {
+        assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("AC", -10);
+        });
     }
 
     @Test
-    void testStreamFilteringLogic() {
-        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
-
-        List<Bogie> result = obj.filterUsingStream(createSampleBogies());
-
-        assertEquals(2, result.size());
+    void testException_ZeroCapacityThrowsException() {
+        assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("Sleeper", 0);
+        });
     }
 
     @Test
-    void testLoopAndStreamResultsMatch() {
-        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+    void testException_ExceptionMessageValidation() {
+        Exception exception = assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("FirstClass", 0);
+        });
 
-        List<Bogie> loopResult = obj.filterUsingLoop(createSampleBogies());
-        List<Bogie> streamResult = obj.filterUsingStream(createSampleBogies());
-
-        assertEquals(loopResult.size(), streamResult.size());
+        assertEquals("Capacity must be greater than zero", exception.getMessage());
     }
 
     @Test
-    void testExecutionTimeMeasurement() {
-        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+    void testException_ObjectIntegrityAfterCreation() throws InvalidCapacityException {
+        PassengerBogie bogie = new PassengerBogie("Sleeper", 80);
 
-        long loopTime = obj.measureLoopTime(createSampleBogies());
-        long streamTime = obj.measureStreamTime(createSampleBogies());
-
-        assertTrue(loopTime > 0);
-        assertTrue(streamTime > 0);
+        assertEquals("Sleeper", bogie.getType());
+        assertEquals(80, bogie.getCapacity());
     }
 
     @Test
-    void testLargeDatasetProcessing() {
-        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+    void testException_MultipleValidBogiesCreation() {
+        assertDoesNotThrow(() -> {
+            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
+            PassengerBogie b2 = new PassengerBogie("AC", 60);
+            PassengerBogie b3 = new PassengerBogie("FirstClass", 40);
 
-        List<Bogie> largeList = new ArrayList<>();
-
-        for (int i = 0; i < 10000; i++) {
-            largeList.add(new Bogie("B" + i, i % 100));
-        }
-
-        List<Bogie> result = obj.filterUsingLoop(largeList);
-
-        assertNotNull(result);
+            assertNotNull(b1);
+            assertNotNull(b2);
+            assertNotNull(b3);
+        });
     }
 }
