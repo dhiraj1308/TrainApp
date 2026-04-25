@@ -1,48 +1,40 @@
-package com.railway;
-
-import com.railway.model.Bogie;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-/**
- * Main application for UC9.
- * Demonstrates grouping a list of Bogies by their category (e.g., Passenger vs Goods).
- */
-public class TrainConsistApp {
+class Bogie {
+    private String type;
+    private int seatCapacity;
+
+    public Bogie(String type, int seatCapacity) {
+        this.type = type;
+        this.seatCapacity = seatCapacity;
+    }
+
+    public String getType() { return type; }
+    public int getSeatCapacity() { return seatCapacity; }
+}
+
+public class TrainApp {
+    public static int calculateTotalSeats(List<Bogie> bogies) {
+        return bogies.stream()
+                // Filter only passenger-related bogies
+                .filter(b -> b.getType().equalsIgnoreCase("Sleeper") ||
+                        b.getType().equalsIgnoreCase("AC Chair") ||
+                        b.getType().equalsIgnoreCase("First Class"))
+                .map(Bogie::getSeatCapacity)
+                // Use reduce to sum capacities; starting with an identity of 0
+                .reduce(0, (total, current) -> total + current);
+    }
 
     public static void main(String[] args) {
-        List<Bogie> trainConsist = getSampleBogies();
-
-        // Execution of the grouping logic
-        Map<String, List<Bogie>> groupedResults = groupBogiesByCategory(trainConsist);
-
-        // Outputting results for verification
-        System.out.println("--- Grouped Train Consist ---");
-        groupedResults.forEach((category, list) -> {
-            System.out.println(category + ": " + list.size() + " items");
-            list.forEach(b -> System.out.println("  -> " + b.getId() + " [" + b.getType() + "]"));
-        });
-    }
-
-    /**
-     * Logic for UC9: Groups bogies into a Map using Java Streams.
-     * @param bogies The raw list of bogies.
-     * @return A Map where the key is the category and value is the list of bogies in that category.
-     */
-    public static Map<String, List<Bogie>> groupBogiesByCategory(List<Bogie> bogies) {
-        return bogies.stream()
-                .collect(Collectors.groupingBy(Bogie::getCategory));
-    }
-
-    private static List<Bogie> getSampleBogies() {
-        return Arrays.asList(
-                new Bogie("B1", "Sleeper", "Passenger"),
-                new Bogie("B2", "AC Chair", "Passenger"),
-                new Bogie("G1", "Rectangular", "Goods"),
-                new Bogie("B3", "First Class", "Passenger"),
-                new Bogie("G2", "Cylindrical", "Goods")
+        List<Bogie> trainConsist = List.of(
+                new Bogie("Sleeper", 72),
+                new Bogie("AC Chair", 56),
+                new Bogie("Rectangular", 0), // Goods bogie
+                new Bogie("First Class", 24)
         );
+
+        int totalSeats = calculateTotalSeats(trainConsist);
+        System.out.println("Total Passenger Seats in Train: " + totalSeats);
     }
 }
