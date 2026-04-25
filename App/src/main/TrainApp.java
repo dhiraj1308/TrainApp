@@ -1,14 +1,18 @@
 package main;
 
-import java.util.Arrays;
-
 public class TrainApp {
 
-    // 🔹 Sorting using Arrays.sort()
-    public String[] sortBogieNames(String[] bogieNames) {
+    // 🔹 Linear Search Method
+    public boolean searchBogie(String[] bogieIds, String key) {
 
-        Arrays.sort(bogieNames); // built-in sorting
+        for (String id : bogieIds) {
 
-        return bogieNames;
+            // compare using equals()
+            if (id.equals(key)) {
+                return true; // found → stop early
+            }
+        }
+
+        return false; // not found
     }
 }
