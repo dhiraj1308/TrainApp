@@ -1,11 +1,15 @@
-Based on the assignment details for UC16 - Sort Passenger Bogies by Capacity, here is a structured README.md file you can use for your project. It covers the logic, requirements, and the specific Bubble Sort implementation requested by Prabhu Nagamani.UC16: Sort Passenger Bogies by CapacityProject OverviewThis project implements a manual sorting mechanism to organize passenger bogie capacities in ascending order. Instead of using built-in language utilities (like Arrays.sort()), this solution utilizes the Bubble Sort algorithm to demonstrate fundamental algorithmic thinking and array manipulation.GoalTo sort an array of bogie capacities using a basic comparison-based algorithm to understand the internal mechanics of sorting, time complexity ($O(n^2)$), and nested loop processing.FeaturesManual Implementation: Uses a custom Bubble Sort algorithm without library dependencies.Adjacent Comparison: Iterates through the array, comparing neighboring elements.Swapping Logic: Swaps elements using a temporary variable when they are out of order.Pass-through Iteration: Continues multiple passes until the entire array is sorted.Logic FlowInput: The system receives an array of integers representing bogie capacities.Comparison: The system enters a nested loop where array[j] is compared with array[j+1].Swap: If array[j] > array[j+1], the values are swapped.Repeat: This process repeats for all elements across multiple passes.Output: The sorted array is displayed to the user.Algorithm Details: Bubble SortThe core of this use case is the Bubble Sort algorithm. In each pass, the largest unsorted element "bubbles up" to its correct position at the end of the array.ComplexityTime Complexity: $O(n^2)$ (Quadratic)Space Complexity: $O(1)$ (In-place sorting)Sample Pseudo-codeJavafor (int i = 0; i < n - 1; i++) {
-for (int j = 0; j < n - i - 1; j++) {
-if (bogies[j] > bogies[j + 1]) {
-// Swap logic
-int temp = bogies[j];
-bogies[j] = bogies[j + 1];
-bogies[j + 1] = temp;
+OverviewThis use case demonstrates how to efficiently sort a collection of train bogie type names alphabetically using Java’s built-in utility methods. Instead of implementing manual sorting algorithms (like Bubble Sort), this program leverages the standard Java library to ensure optimal performance and readable code.GoalThe primary objective is to take an unsorted array of bogie type names provided by the user and display them in alphabetical order using the java.util.Arrays.sort() method.Key ConceptsArrays.sort(): A highly optimized built-in method that uses a Dual-Pivot Quicksort (for primitives) or TimSort (for objects like Strings).Natural Ordering: The default alphabetical (lexicographical) order used for Strings.Time Complexity: Utilizes an $O(n \log n)$ approach, which is significantly more efficient than manual $O(n^2)$ sorting methods.Library Optimization: Demonstrates the industry practice of preferring standard, well-tested libraries over custom-built logic for common tasks.RequirementsInitialize an array of String objects representing bogie types (e.g., "Sleeper", "AC", "General").Use Arrays.sort() to perform the sorting.Constraint: Do not use manual swap logic or loops to handle the sorting process.Output the final result using Arrays.toString().Technical ImplementationLogic FlowInput: Define an array of Strings containing various bogie names.Processing: Pass the array as an argument to Arrays.sort(bogieArray).Output: Print the sorted array to the console to verify alphabetical order.Example Code SnippetJavaimport java.util.Arrays;
+
+public class BogieSorter {
+public static void main(String[] args) {
+// 1. Define bogie names
+String[] bogies = {"Sleeper", "Pantry Car", "AC First Class", "General", "Ladies Special"};
+
+        // 2. Sort using Java Standard Library
+        Arrays.sort(bogies);
+
+        // 3. Display sorted results
+        System.out.println("Sorted Bogie Names: " + Arrays.toString(bogies));
+    }
 }
-}
-}
-Key RequirementsCreate an array specifically for passenger bogie capacities.Strictly avoid using Arrays.sort() or Collections.sort().Ensure the output clearly displays the capacities before and after sorting.BenefitsBridges the gap between theoretical data structures and practical implementation.Builds a foundation for understanding more optimized sorting algorithms (like QuickSort or MergeSort) later.Enhances problem-solving skills through low-level array access.
+BenefitsMaintainability: Concise code is easier for other developers to read and update.Performance: Optimized for large datasets where manual sorting would be too slow.Standardization: Follows Java best practices by using the java.util package.
