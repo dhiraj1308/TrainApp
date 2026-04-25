@@ -1,48 +1,53 @@
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TrainApp {
+enum BogieShape {
+    RECTANGULAR, CYLINDRICAL
+}
 
-    // Regex patterns as defined in requirements
-    private static final String TRAIN_ID_REGEX = "TRN-\\d{4}";
-    private static final String CARGO_CODE_REGEX = "PET-[A-Z]{2}";
+enum CargoType {
+    GRAIN, COAL, PETROLEUM, CHEMICALS
+}
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+class GoodsBogie {
+    private String id;
+    private BogieShape shape;
+    private CargoType cargo;
 
-        System.out.println("--- UC11: Train ID & Cargo Code Validation ---");
-
-        // 1. Validate Train ID
-        System.out.print("Enter Train ID (Format: TRN-1234): ");
-        String trainId = scanner.nextLine();
-        if (validateInput(trainId, TRAIN_ID_REGEX)) {
-            System.out.println("✔ Valid Train ID: " + trainId);
-        } else {
-            System.out.println("❌ Invalid Train ID format. Expected TRN-XXXX (4 digits).");
-        }
-
-        // 2. Validate Cargo Code
-        System.out.print("Enter Cargo Code (Format: PET-AB): ");
-        String cargoCode = scanner.nextLine();
-        if (validateInput(cargoCode, CARGO_CODE_REGEX)) {
-            System.out.println("✔ Valid Cargo Code: " + cargoCode);
-        } else {
-            System.out.println("❌ Invalid Cargo Code format. Expected PET-XX (2 uppercase letters).");
-        }
-
-        scanner.close();
+    public GoodsBogie(String id, BogieShape shape, CargoType cargo) {
+        this.id = id;
+        this.shape = shape;
+        this.cargo = cargo;
     }
 
-    /**
-     * Utility method to validate input against a regex pattern.
-     */
-    public static boolean validateInput(String input, String regex) {
-        if (input == null || input.isEmpty()) {
-            return false;
+    public boolean isSafetyCompliant() {
+        if (shape == BogieShape.CYLINDRICAL) {
+            // Cylindrical bogies are restricted to liquid/hazardous cargo
+            return cargo == CargoType.PETROLEUM || cargo == CargoType.CHEMICALS;
+        } else if (shape == BogieShape.RECTANGULAR) {
+            // Rectangular bogies are for solid bulk cargo
+            return cargo == CargoType.GRAIN || cargo == CargoType.COAL;
         }
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-        return matcher.matches(); // Checks the entire string [cite: 1]
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Bogie " + id + " [" + shape + "] carrying " + cargo +
+                " - Compliant: " + isSafetyCompliant();
+    }
+}
+
+public class TrainSafetyApp {
+    public static void main(String[] args) {
+        List<GoodsBogie> consist = new ArrayList<>();
+        consist.add(new GoodsBogie("GB001", BogieShape.CYLINDRICAL, CargoType.PETROLEUM));
+        consist.add(new GoodsBogie("GB002", BogieShape.RECTANGULAR, CargoType.GRAIN));
+        consist.add(new GoodsBogie("GB003", BogieShape.RECTANGULAR, CargoType.PETROLEUM)); // Invalid
+
+        System.out.println("--- Train Safety Compliance Report ---");
+        for (GoodsBogie bogie : consist) {
+            System.out.println(bogie);
+        }
     }
 }

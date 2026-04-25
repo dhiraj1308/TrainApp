@@ -1,4 +1,18 @@
-README: Train Consist Management AppThis project implements UC11: Validate Train ID and Cargo Codes (Regex) for the Train Consist Management system. It focuses on ensuring that user provided data adheres to strict railway business rules using Regular Expressions in Java.OverviewThe Train Consist Management App is a console based Java application designed to simulate railway data entry. This update addresses the drawbacks of earlier versions where data was assumed to be well formed. UC11 adds a validation layer to prevent:Incorrectly formatted Train IDs.Inconsistent Cargo Codes.Human errors during data entry.Technical SpecificationsThe validation logic is built using Javas java.util.regex package, specifically utilizing the Pattern and Matcher classes.Validation RulesData FieldRequired FormatRegex PatternExampleTrain IDTRN- followed by exactly 4 digitsTRN-\d{4}TRN-1234Cargo CodePET- followed by 2 uppercase lettersPET-[A-Z]{2}PET-ABGetting StartedPrerequisitesJava Development Kit (JDK): Version 8 or higher.JUnit 4: For running the provided test suite.InstallationClone the repository or download the source files.Ensure TrainConsistManagementApp.java and TrainConsistAppTest.java are in the same directory.Running the ApplicationCompile and run the main class to test the validation interactively:Bashjavac TrainConsistManagementApp.java
-java TrainConsistManagementApp
-Running the TestsTo verify the regex logic against all edge cases run the JUnit tests:Bashjava -cp .:/path/to/junit.jar org.junit.runner.JUnitCore TrainConsistAppTest
-Test Scenarios CoveredThe included test suite ensures robust validation by checking:Positive Cases: Correct formats like TRN-1234 and PET-AB.Negative Cases:Incorrect prefixes like TRAIN-1234.Wrong lengths like TRN-123 or PET-ABC.Casing issues like PET-ab.Special character interference.Empty or null inputs.
+Description
+This application module focuses on enforcing domain safety rules for Goods Bogies. It addresses the risks associated with assigning incorrect cargo types to specific bogie shapes to prevent leaks and derailment risks.
+
+Safety Rules Implemented
+
+Cylindrical Bogies: Only permitted to carry liquid or hazardous cargo like Petroleum and Chemicals.
+
+Rectangular Bogies: Only permitted to carry dry bulk cargo like Grain and Coal.
+
+How to Run
+
+Compile the main application: javac TrainSafetyApp.java
+
+Run the main application: java TrainSafetyApp
+
+Compile the test suite: javac SafetyComplianceTest.java
+
+Run tests with assertions enabled: java -ea SafetyComplianceTest
