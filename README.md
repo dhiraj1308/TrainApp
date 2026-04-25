@@ -1,55 +1,41 @@
-# UC9: Group Bogies by Type (Collectors.groupingBy)
+Train Consist Management App - UC10
+Total Seat Capacity Calculation (Stream Reduce)
+Overview
+This application simulates a railway management system's ability to calculate the total seating capacity of a train. While previous versions focused on grouping bogies, UC10 introduces numerical aggregation using the Java Streams reduce() operation. This allows railway administrators to perform utilization planning and estimate passenger handling capabilities.
 
-## Project Description
-The **Train Consist Management App** is a Java application designed to simulate railway operations. This specific module (**UC9**) demonstrates how to transition from basic flat-list filtering to organized data reporting.
+Key Java Concept: reduce()
+The reduce() method is a terminal operation that takes a sequence of input elements and combines them into a single summary result by repeated application of a combining operation.
 
-In real-world railway administration, managers need to separate passenger bogies from goods bogies or organize cars by class (e.g., AC vs. Sleeper). This project implements that logic using the **Java Stream API**.
+Identity: The initial value (0).
 
----
+Accumulator: A function that takes two parameters (the partial result and the next element) and returns a new partial result.
 
-## Technical Concept: `Collectors.groupingBy`
-While standard filtering (`filter()`) reduces a list, `groupingBy` organizes it. It functions similarly to the `GROUP BY` clause in SQL, returning a `Map<K, List<T>>` where:
-- **Key (K):** The attribute you are grouping by (e.g., `category`).
-- **Value (List<T>):** A list of all objects that match that specific key.
+Features
+Selective Filtering: Only counts seats for passenger bogies (Sleeper, AC Chair, First Class).
 
----
+Exclusion Logic: Automatically ignores goods bogies (e.g., Rectangular, Cylindrical) that have zero seating capacity.
 
-## Project Structure
-| File | Description |
-| :--- | :--- |
-| **Bogie.java** | The data model representing a train car with attributes like ID, Type, and Category. |
-| **TrainConsistApp.java** | Contains the core logic using `Collectors.groupingBy` to categorize the train consist. |
-| **TrainConsistAppTest.java** | JUnit 5 test cases to ensure the grouping logic handles both populated and empty lists correctly. |
+Stream Processing: Uses a clean, functional approach to handle data collections.
 
----
+Project Structure
+Train.java: Contains the Bogie class definition, the core logic for seat summation, and a main method for demonstration.
 
-## How to Run
+TrainTest.java: JUnit 5 test suite to validate the summation logic against various train configurations (mixed bogies, empty lists, etc.).
 
-### 1. Prerequisites
-- **Java Development Kit (JDK) 8** or higher.
-- A terminal or IDE (IntelliJ, Eclipse, or VS Code).
+How to Run
+Compile the Application:
 
-### 2. Execution
-1.  **Compile the classes:**
-    ```bash
-    javac com/railway/model/Bogie.java com/railway/TrainConsistApp.java
-    ```
-2.  **Run the application:**
-    ```bash
-    java com.railway.TrainConsistApp
-    ```
+Bash
+javac Train.java
+Run the Main Application:
 
----
+Bash
+java Train
+Run Tests:
+Ensure you have JUnit 5 in your classpath, then run:
 
-## Expected Output
-When executed, the console will display the bogies organized by their respective categories:
-
-```text
---- Grouped Train Consist ---
-Goods: 2 items
-  -> G1 [Rectangular]
-  -> G2 [Cylindrical]
-Passenger: 3 items
-  -> B1 [Sleeper]
-  -> B2 [AC Chair]
-  -> B3 [First Class]
+Bash
+java -jar junit-platform-console-standalone.jar -cp . --select-class TrainTest
+Expected Output
+When running the main method, the application will process a sample train consist and output:
+Total Passenger Seats in Train: 152

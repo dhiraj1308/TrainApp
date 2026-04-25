@@ -1,46 +1,36 @@
-package com.railway;
-
-import com.railway.model.Bogie;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
 
-/**
- * Test cases for UC9: Group Bogies by Type.
- */
-public class TrainConsistAppTest {
+public class TrainApp_Test {
 
     @Test
-    void testGroupBogiesByCategory_Success() {
-        // Arrange: Create a mixed list of Passenger and Goods bogies
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("P1", "Sleeper", "Passenger"),
-                new Bogie("G1", "Flatcar", "Goods"),
-                new Bogie("P2", "Dining", "Passenger")
+    public void testCalculateTotalSeats_MixedBogies() {
+        List<Bogie> bogies = List.of(
+                new Bogie("Sleeper", 72),
+                new Bogie("AC Chair", 56),
+                new Bogie("Cylindrical", 0) // Should be ignored
         );
 
-        // Act: Apply grouping logic
-        Map<String, List<Bogie>> result = TrainConsistApp.groupBogiesByCategory(bogies);
-
-        // Assert: Verify map structure and counts
-        assertEquals(2, result.size(), "Map should contain exactly 2 categories.");
-        assertEquals(2, result.get("Passenger").size(), "Passenger group should have 2 entries.");
-        assertEquals(1, result.get("Goods").size(), "Goods group should have 1 entry.");
-        assertEquals("P1", result.get("Passenger").get(0).getId());
+        int result = Train.calculateTotalSeats(bogies);
+        assertEquals(128, result, "Total seats should sum Sleeper and AC Chair only.");
     }
 
     @Test
-    void testGroupBogiesByCategory_EmptyList() {
-        // Arrange: Empty input
-        List<Bogie> emptyList = Arrays.asList();
+    public void testCalculateTotalSeats_EmptyList() {
+        List<Bogie> bogies = new ArrayList<>();
+        int result = Train.calculateTotalSeats(bogies);
+        assertEquals(0, result, "Total seats for an empty consist should be 0.");
+    }
 
-        // Act: Apply grouping logic
-        Map<String, List<Bogie>> result = TrainConsistApp.groupBogiesByCategory(emptyList);
-
-        // Assert: Result should be an empty map, not null
-        assertNotNull(result);
-        assertTrue(result.isEmpty(), "Resulting map should be empty for an empty input list.");
+    @Test
+    public void testCalculateTotalSeats_OnlyGoodsBogies() {
+        List<Bogie> bogies = List.of(
+                new Bogie("Rectangular", 0),
+                new Bogie("Cylindrical", 0)
+        );
+        int result = Train.calculateTotalSeats(bogies);
+        assertEquals(0, result, "Total seats should be 0 if no passenger bogies exist.");
     }
 }
