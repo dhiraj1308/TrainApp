@@ -1,59 +1,54 @@
 package test;
 
-import main.UseCase17TrainConsistMgmt;
+import main.UseCase18TrainConsistMgmt;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UseCase17TrainConsistMgmtTest {
+public class UseCase18TrainConsistMgmtTest {
 
     @Test
-    void testSort_BasicAlphabeticalSorting() {
-        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+    void testSearch_BogieFound() {
+        UseCase18TrainConsistMgmt obj = new UseCase18TrainConsistMgmt();
 
-        String[] input = {"Sleeper","AC Chair","First Class","General","Luxury"};
-        String[] expected = {"AC Chair","First Class","General","Luxury","Sleeper"};
+        String[] data = {"BG101","BG205","BG309","BG412","BG550"};
 
-        assertArrayEquals(expected, obj.sortBogieNames(input));
+        assertTrue(obj.searchBogie(data, "BG309"));
     }
 
     @Test
-    void testSort_UnsortedInput() {
-        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+    void testSearch_BogieNotFound() {
+        UseCase18TrainConsistMgmt obj = new UseCase18TrainConsistMgmt();
 
-        String[] input = {"Luxury","General","Sleeper","AC Chair"};
-        String[] expected = {"AC Chair","General","Luxury","Sleeper"};
+        String[] data = {"BG101","BG205","BG309","BG412","BG550"};
 
-        assertArrayEquals(expected, obj.sortBogieNames(input));
+        assertFalse(obj.searchBogie(data, "BG999"));
     }
 
     @Test
-    void testSort_AlreadySortedArray() {
-        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+    void testSearch_FirstElementMatch() {
+        UseCase18TrainConsistMgmt obj = new UseCase18TrainConsistMgmt();
 
-        String[] input = {"AC Chair","First Class","General"};
-        String[] expected = {"AC Chair","First Class","General"};
+        String[] data = {"BG101","BG205","BG309","BG412","BG550"};
 
-        assertArrayEquals(expected, obj.sortBogieNames(input));
+        assertTrue(obj.searchBogie(data, "BG101"));
     }
 
     @Test
-    void testSort_DuplicateBogieNames() {
-        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+    void testSearch_LastElementMatch() {
+        UseCase18TrainConsistMgmt obj = new UseCase18TrainConsistMgmt();
 
-        String[] input = {"Sleeper","AC Chair","Sleeper","General"};
-        String[] expected = {"AC Chair","General","Sleeper","Sleeper"};
+        String[] data = {"BG101","BG205","BG309","BG412","BG550"};
 
-        assertArrayEquals(expected, obj.sortBogieNames(input));
+        assertTrue(obj.searchBogie(data, "BG550"));
     }
 
     @Test
-    void testSort_SingleElementArray() {
-        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+    void testSearch_SingleElementArray() {
+        UseCase18TrainConsistMgmt obj = new UseCase18TrainConsistMgmt();
 
-        String[] input = {"Sleeper"};
-        String[] expected = {"Sleeper"};
+        String[] data = {"BG101"};
 
-        assertArrayEquals(expected, obj.sortBogieNames(input));
+        assertTrue(obj.searchBogie(data, "BG101"));
     }
 }
