@@ -1,59 +1,59 @@
 package test;
 
-import main.UseCase16TrainConsistMgmt;
+import main.UseCase17TrainConsistMgmt;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UseCase16TrainConsistMgmtTest {
+public class UseCase17TrainConsistMgmtTest {
 
     @Test
-    void testSort_BasicSorting() {
-        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
+    void testSort_BasicAlphabeticalSorting() {
+        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
 
-        int[] input = {72, 56, 24, 70, 60};
-        int[] expected = {24, 56, 60, 70, 72};
+        String[] input = {"Sleeper","AC Chair","First Class","General","Luxury"};
+        String[] expected = {"AC Chair","First Class","General","Luxury","Sleeper"};
 
-        assertArrayEquals(expected, obj.sortCapacities(input));
+        assertArrayEquals(expected, obj.sortBogieNames(input));
+    }
+
+    @Test
+    void testSort_UnsortedInput() {
+        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
+
+        String[] input = {"Luxury","General","Sleeper","AC Chair"};
+        String[] expected = {"AC Chair","General","Luxury","Sleeper"};
+
+        assertArrayEquals(expected, obj.sortBogieNames(input));
     }
 
     @Test
     void testSort_AlreadySortedArray() {
-        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
+        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
 
-        int[] input = {24, 56, 60, 70, 72};
-        int[] expected = {24, 56, 60, 70, 72};
+        String[] input = {"AC Chair","First Class","General"};
+        String[] expected = {"AC Chair","First Class","General"};
 
-        assertArrayEquals(expected, obj.sortCapacities(input));
+        assertArrayEquals(expected, obj.sortBogieNames(input));
     }
 
     @Test
-    void testSort_DuplicateValues() {
-        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
+    void testSort_DuplicateBogieNames() {
+        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
 
-        int[] input = {72, 56, 56, 24};
-        int[] expected = {24, 56, 56, 72};
+        String[] input = {"Sleeper","AC Chair","Sleeper","General"};
+        String[] expected = {"AC Chair","General","Sleeper","Sleeper"};
 
-        assertArrayEquals(expected, obj.sortCapacities(input));
+        assertArrayEquals(expected, obj.sortBogieNames(input));
     }
 
     @Test
     void testSort_SingleElementArray() {
-        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
+        UseCase17TrainConsistMgmt obj = new UseCase17TrainConsistMgmt();
 
-        int[] input = {50};
-        int[] expected = {50};
+        String[] input = {"Sleeper"};
+        String[] expected = {"Sleeper"};
 
-        assertArrayEquals(expected, obj.sortCapacities(input));
-    }
-
-    @Test
-    void testSort_AllEqualValues() {
-        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
-
-        int[] input = {40, 40, 40};
-        int[] expected = {40, 40, 40};
-
-        assertArrayEquals(expected, obj.sortCapacities(input));
+        assertArrayEquals(expected, obj.sortBogieNames(input));
     }
 }
