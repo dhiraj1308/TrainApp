@@ -1,29 +1,75 @@
-public class SafetyComplianceTest {
-    public static void main(String[] args) {
-        testCylindricalValid();
-        testCylindricalInvalid();
-        testRectangularValid();
-        testRectangularInvalid();
-        System.out.println("All safety compliance tests passed!");
+package test;
+
+import main.UseCase13TrainConsistMgmt;
+import main.UseCase13TrainConsistMgmt.Bogie; // 🔥 IMPORTANT
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class UseCase13TrainConsistMgmtTest {
+
+    private List<Bogie> createSampleBogies() {
+        return Arrays.asList(
+                new Bogie("B1", 50),
+                new Bogie("B2", 70),
+                new Bogie("B3", 80),
+                new Bogie("B4", 40)
+        );
     }
 
-    static void testCylindricalValid() {
-        GoodsBogie bogie = new GoodsBogie("T1", BogieShape.CYLINDRICAL, CargoType.PETROLEUM);
-        assert bogie.isSafetyCompliant() : "Cylindrical bogie with Petroleum should be valid";
+    @Test
+    void testLoopFilteringLogic() {
+        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+
+        List<Bogie> result = obj.filterUsingLoop(createSampleBogies());
+
+        assertEquals(2, result.size());
     }
 
-    static void testCylindricalInvalid() {
-        GoodsBogie bogie = new GoodsBogie("T2", BogieShape.CYLINDRICAL, CargoType.GRAIN);
-        assert !bogie.isSafetyCompliant() : "Cylindrical bogie with Grain should be invalid";
+    @Test
+    void testStreamFilteringLogic() {
+        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+
+        List<Bogie> result = obj.filterUsingStream(createSampleBogies());
+
+        assertEquals(2, result.size());
     }
 
-    static void testRectangularValid() {
-        GoodsBogie bogie = new GoodsBogie("T3", BogieShape.RECTANGULAR, CargoType.COAL);
-        assert bogie.isSafetyCompliant() : "Rectangular bogie with Coal should be valid";
+    @Test
+    void testLoopAndStreamResultsMatch() {
+        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+
+        List<Bogie> loopResult = obj.filterUsingLoop(createSampleBogies());
+        List<Bogie> streamResult = obj.filterUsingStream(createSampleBogies());
+
+        assertEquals(loopResult.size(), streamResult.size());
     }
 
-    static void testRectangularInvalid() {
-        GoodsBogie bogie = new GoodsBogie("T4", BogieShape.RECTANGULAR, CargoType.CHEMICALS);
-        assert !bogie.isSafetyCompliant() : "Rectangular bogie with Chemicals should be invalid";
+    @Test
+    void testExecutionTimeMeasurement() {
+        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+
+        long loopTime = obj.measureLoopTime(createSampleBogies());
+        long streamTime = obj.measureStreamTime(createSampleBogies());
+
+        assertTrue(loopTime > 0);
+        assertTrue(streamTime > 0);
+    }
+
+    @Test
+    void testLargeDatasetProcessing() {
+        UseCase13TrainConsistMgmt obj = new UseCase13TrainConsistMgmt();
+
+        List<Bogie> largeList = new ArrayList<>();
+
+        for (int i = 0; i < 10000; i++) {
+            largeList.add(new Bogie("B" + i, i % 100));
+        }
+
+        List<Bogie> result = obj.filterUsingLoop(largeList);
+
+        assertNotNull(result);
     }
 }
