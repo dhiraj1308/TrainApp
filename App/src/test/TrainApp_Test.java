@@ -1,59 +1,59 @@
 package test;
 
-import main.UseCase15TrainConsistMgmt;
-import main.UseCase15TrainConsistMgmt.GoodsBogie;
-
+import main.UseCase16TrainConsistMgmt;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UseCase15TrainConsistMgmtTest {
+public class UseCase16TrainConsistMgmtTest {
 
     @Test
-    void testCargo_SafeAssignment() {
-        GoodsBogie bogie = new GoodsBogie("Cylindrical");
+    void testSort_BasicSorting() {
+        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
 
-        bogie.assignCargo("Petroleum");
+        int[] input = {72, 56, 24, 70, 60};
+        int[] expected = {24, 56, 60, 70, 72};
 
-        assertEquals("Petroleum", bogie.getCargo());
+        assertArrayEquals(expected, obj.sortCapacities(input));
     }
 
     @Test
-    void testCargo_UnsafeAssignmentHandled() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_AlreadySortedArray() {
+        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
 
-        bogie.assignCargo("Petroleum");
+        int[] input = {24, 56, 60, 70, 72};
+        int[] expected = {24, 56, 60, 70, 72};
 
-        // Should NOT assign
-        assertNull(bogie.getCargo());
+        assertArrayEquals(expected, obj.sortCapacities(input));
     }
 
     @Test
-    void testCargo_CargoNotAssignedAfterFailure() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_DuplicateValues() {
+        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
 
-        bogie.assignCargo("Petroleum");
+        int[] input = {72, 56, 56, 24};
+        int[] expected = {24, 56, 56, 72};
 
-        assertNull(bogie.getCargo());
+        assertArrayEquals(expected, obj.sortCapacities(input));
     }
 
     @Test
-    void testCargo_ProgramContinuesAfterException() {
-        GoodsBogie bogie1 = new GoodsBogie("Rectangular");
-        GoodsBogie bogie2 = new GoodsBogie("Cylindrical");
+    void testSort_SingleElementArray() {
+        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
 
-        bogie1.assignCargo("Petroleum"); // fails
-        bogie2.assignCargo("Coal");      // should still work
+        int[] input = {50};
+        int[] expected = {50};
 
-        assertEquals("Coal", bogie2.getCargo());
+        assertArrayEquals(expected, obj.sortCapacities(input));
     }
 
     @Test
-    void testCargo_FinallyBlockExecution() {
-        GoodsBogie bogie = new GoodsBogie("Rectangular");
+    void testSort_AllEqualValues() {
+        UseCase16TrainConsistMgmt obj = new UseCase16TrainConsistMgmt();
 
-        // Just checking no crash + finally runs (console output)
-        bogie.assignCargo("Petroleum");
+        int[] input = {40, 40, 40};
+        int[] expected = {40, 40, 40};
 
-        assertTrue(true); // ensures execution reached here
+        assertArrayEquals(expected, obj.sortCapacities(input));
     }
 }
