@@ -1,18 +1,63 @@
-Description
-This application module focuses on enforcing domain safety rules for Goods Bogies. It addresses the risks associated with assigning incorrect cargo types to specific bogie shapes to prevent leaks and derailment risks.
+javac TrainConsistManagement.java
+java TrainConsistManagement
+🧪 Sample Functionalities
+✅ Add Passenger Bogies
+Sleeper
+AC Chair
+First Class
+✅ Ensure Unique Bogies
+Duplicate bogies automatically ignored using HashSet
+✅ Maintain Order
+Train formation preserved using LinkedHashSet
+✅ Map Capacity
+Sleeper → 72
+AC Chair → 50
+First Class → 30
+✅ Sort Bogies
+Sorted using Comparator based on capacity
+✅ Filter Bogies (UC8)
+Display bogies with capacity > threshold using filter()
+✅ Group Bogies (UC9)
+Group by type using groupingBy()
+✅ Total Capacity (UC10)
+Calculate total seats using map() + reduce()
+✅ Regex Validation (UC11)
+Train ID → TRN-1234
+Cargo Code → PET-AB
+✅ Safety Compliance (UC12)
+Cylindrical bogies must carry Petroleum only
+Validated using allMatch()
+📊 Sample Output
+=== Train Consist Management App ===
 
-Safety Rules Implemented
+All Bogies:
+Sleeper (Capacity: 72)
+AC Chair (Capacity: 50)
+First Class (Capacity: 30)
 
-Cylindrical Bogies: Only permitted to carry liquid or hazardous cargo like Petroleum and Chemicals.
+Total Seating Capacity: 152
 
-Rectangular Bogies: Only permitted to carry dry bulk cargo like Grain and Coal.
+Grouped Bogies:
+Sleeper → [Sleeper (Capacity: 72)]
+AC Chair → [AC Chair (Capacity: 50)]
 
-How to Run
+Train ID is VALID
+Cargo Code is VALID
 
-Compile the main application: javac TrainSafetyApp.java
+Train is SAFETY COMPLIANT
+💡 Key Learnings
+Difference between List, Set, and Map
+Importance of uniqueness in real systems
+Object-Oriented design using classes
+Custom sorting using Comparator
+Functional programming using Streams
+Data validation using Regex
+Real-world business rule enforcement
+🔧 Technologies Used
+Java (JDK 17+ / 21+)
+Collections Framework
+Stream API
+Regex (Pattern & Matcher)
+👨‍💻 Author
 
-Run the main application: java TrainSafetyApp
-
-Compile the test suite: javac SafetyComplianceTest.java
-
-Run tests with assertions enabled: java -ea SafetyComplianceTest
+Sigeni Tejas RA2411003011282
