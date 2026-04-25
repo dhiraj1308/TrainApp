@@ -1,40 +1,48 @@
-import java.util.List;
-import java.util.Optional;
-
-class Bogie {
-    private String type;
-    private int seatCapacity;
-
-    public Bogie(String type, int seatCapacity) {
-        this.type = type;
-        this.seatCapacity = seatCapacity;
-    }
-
-    public String getType() { return type; }
-    public int getSeatCapacity() { return seatCapacity; }
-}
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TrainApp {
-    public static int calculateTotalSeats(List<Bogie> bogies) {
-        return bogies.stream()
-                // Filter only passenger-related bogies
-                .filter(b -> b.getType().equalsIgnoreCase("Sleeper") ||
-                        b.getType().equalsIgnoreCase("AC Chair") ||
-                        b.getType().equalsIgnoreCase("First Class"))
-                .map(Bogie::getSeatCapacity)
-                // Use reduce to sum capacities; starting with an identity of 0
-                .reduce(0, (total, current) -> total + current);
-    }
+
+    // Regex patterns as defined in requirements
+    private static final String TRAIN_ID_REGEX = "TRN-\\d{4}";
+    private static final String CARGO_CODE_REGEX = "PET-[A-Z]{2}";
 
     public static void main(String[] args) {
-        List<Bogie> trainConsist = List.of(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 56),
-                new Bogie("Rectangular", 0), // Goods bogie
-                new Bogie("First Class", 24)
-        );
+        Scanner scanner = new Scanner(System.in);
 
-        int totalSeats = calculateTotalSeats(trainConsist);
-        System.out.println("Total Passenger Seats in Train: " + totalSeats);
+        System.out.println("--- UC11: Train ID & Cargo Code Validation ---");
+
+        // 1. Validate Train ID
+        System.out.print("Enter Train ID (Format: TRN-1234): ");
+        String trainId = scanner.nextLine();
+        if (validateInput(trainId, TRAIN_ID_REGEX)) {
+            System.out.println("✔ Valid Train ID: " + trainId);
+        } else {
+            System.out.println("❌ Invalid Train ID format. Expected TRN-XXXX (4 digits).");
+        }
+
+        // 2. Validate Cargo Code
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCode = scanner.nextLine();
+        if (validateInput(cargoCode, CARGO_CODE_REGEX)) {
+            System.out.println("✔ Valid Cargo Code: " + cargoCode);
+        } else {
+            System.out.println("❌ Invalid Cargo Code format. Expected PET-XX (2 uppercase letters).");
+        }
+
+        scanner.close();
+    }
+
+    /**
+     * Utility method to validate input against a regex pattern.
+     */
+    public static boolean validateInput(String input, String regex) {
+        if (input == null || input.isEmpty()) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches(); // Checks the entire string [cite: 1]
     }
 }

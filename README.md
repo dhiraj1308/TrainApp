@@ -1,41 +1,4 @@
-Train Consist Management App - UC10
-Total Seat Capacity Calculation (Stream Reduce)
-Overview
-This application simulates a railway management system's ability to calculate the total seating capacity of a train. While previous versions focused on grouping bogies, UC10 introduces numerical aggregation using the Java Streams reduce() operation. This allows railway administrators to perform utilization planning and estimate passenger handling capabilities.
-
-Key Java Concept: reduce()
-The reduce() method is a terminal operation that takes a sequence of input elements and combines them into a single summary result by repeated application of a combining operation.
-
-Identity: The initial value (0).
-
-Accumulator: A function that takes two parameters (the partial result and the next element) and returns a new partial result.
-
-Features
-Selective Filtering: Only counts seats for passenger bogies (Sleeper, AC Chair, First Class).
-
-Exclusion Logic: Automatically ignores goods bogies (e.g., Rectangular, Cylindrical) that have zero seating capacity.
-
-Stream Processing: Uses a clean, functional approach to handle data collections.
-
-Project Structure
-Train.java: Contains the Bogie class definition, the core logic for seat summation, and a main method for demonstration.
-
-TrainTest.java: JUnit 5 test suite to validate the summation logic against various train configurations (mixed bogies, empty lists, etc.).
-
-How to Run
-Compile the Application:
-
-Bash
-javac Train.java
-Run the Main Application:
-
-Bash
-java Train
-Run Tests:
-Ensure you have JUnit 5 in your classpath, then run:
-
-Bash
-java -jar junit-platform-console-standalone.jar -cp . --select-class TrainTest
-Expected Output
-When running the main method, the application will process a sample train consist and output:
-Total Passenger Seats in Train: 152
+README: Train Consist Management AppThis project implements UC11: Validate Train ID and Cargo Codes (Regex) for the Train Consist Management system. It focuses on ensuring that user provided data adheres to strict railway business rules using Regular Expressions in Java.OverviewThe Train Consist Management App is a console based Java application designed to simulate railway data entry. This update addresses the drawbacks of earlier versions where data was assumed to be well formed. UC11 adds a validation layer to prevent:Incorrectly formatted Train IDs.Inconsistent Cargo Codes.Human errors during data entry.Technical SpecificationsThe validation logic is built using Javas java.util.regex package, specifically utilizing the Pattern and Matcher classes.Validation RulesData FieldRequired FormatRegex PatternExampleTrain IDTRN- followed by exactly 4 digitsTRN-\d{4}TRN-1234Cargo CodePET- followed by 2 uppercase lettersPET-[A-Z]{2}PET-ABGetting StartedPrerequisitesJava Development Kit (JDK): Version 8 or higher.JUnit 4: For running the provided test suite.InstallationClone the repository or download the source files.Ensure TrainConsistManagementApp.java and TrainConsistAppTest.java are in the same directory.Running the ApplicationCompile and run the main class to test the validation interactively:Bashjavac TrainConsistManagementApp.java
+java TrainConsistManagementApp
+Running the TestsTo verify the regex logic against all edge cases run the JUnit tests:Bashjava -cp .:/path/to/junit.jar org.junit.runner.JUnitCore TrainConsistAppTest
+Test Scenarios CoveredThe included test suite ensures robust validation by checking:Positive Cases: Correct formats like TRN-1234 and PET-AB.Negative Cases:Incorrect prefixes like TRAIN-1234.Wrong lengths like TRN-123 or PET-ABC.Casing issues like PET-ab.Special character interference.Empty or null inputs.
